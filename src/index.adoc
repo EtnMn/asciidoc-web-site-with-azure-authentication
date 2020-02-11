@@ -1,0 +1,15 @@
+= AsciiDoc Article Title
+Firstname Lastname <first@name.org>
+1.0, February 01, 2020, Asciidoctor static web site
+:toc: left
+:toc-title: Index
+:source-highlighter: highlightjs
+:imagesdir: ./img
+:icons: font
+:sectanchors:
+:docinfo: shared
+:docinfodir: .
+
+The home page
+
+<<sample/index.adoc#, second page>>

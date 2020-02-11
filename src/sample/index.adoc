@@ -1,0 +1,17 @@
+= Second page
+Firstname Lastname <first@name.org>
+1.0, February 01, 2020, Asciidoctor static web site
+:toc: left
+:toc-title: Index
+:source-highlighter: highlightjs
+:imagesdir: ./img
+:icons: font
+:sectanchors:
+:docinfo: shared
+:docinfodir: ..
+
+
+A page with an image
+
+.Placeholder
+image::150-150.png[Placeholder]

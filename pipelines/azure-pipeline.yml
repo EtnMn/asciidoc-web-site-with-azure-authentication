@@ -1,0 +1,55 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: UseRubyVersion@0
+  inputs:
+    versionSpec: '>= 2.5'
+
+- script: touch Gemfile
+  displayName: 'Create Gemfile'
+
+- script: |
+    CALL gem install bundler
+    bundle install --retry=3 --jobs=4
+  displayName: 'bundle install'
+
+- script: |
+    gem install concurrent-ruby
+    gem install asciidoctor
+    gem install asciidoctor-diagram
+    bundle
+  displayName: 'gem install'
+
+- script: asciidoctor -R './' -D './' -r asciidoctor-diagram 'src/**/index.adoc'
+  displayName: 'build asciidoctor'
+
+- task: CopyFiles@2
+  displayName: Copy output files
+  inputs:
+    contents: |
+      src/**/*.html
+      src/**/img/**
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+- task: ArchiveFiles@2
+  displayName: Zip static files
+  inputs:
+    archiveFile: doc.zip
+    archiveType: zip
+    rootFolderOrFile: $(Build.ArtifactStagingDirectory)/src
+    includeRootFolder: false
+
+- task: AzureRmWebAppDeployment@4
+  displayName: Publish static files
+  inputs:
+    azureSubscription: $(azureSubscription)
+    WebAppName: $(azureWebAppName)
+    WebAppKind: webApp
+    Package: doc.zip
