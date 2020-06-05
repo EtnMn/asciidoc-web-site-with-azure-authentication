@@ -27,6 +27,10 @@ steps:
     bundle
   displayName: 'gem install'
 
+- script: |
+    sudo apt install graphviz
+  displayName: 'graphviz install'
+
 - script: asciidoctor -R './' -D './' -r asciidoctor-diagram 'src/**/index.adoc'
   displayName: 'build asciidoctor'
 
